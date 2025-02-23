@@ -46,18 +46,18 @@ def one_dimensional_linear_interpolation(
             loss_sum = 0
             for X, Y in iter(train_loader):
                 predictions = model(X)
-                loss_sum += loss(X, Y).item()
-            train_losses.append(loss_sum)
+                loss_sum += loss(predictions, Y).item()
+            train_losses[i] = loss_sum
 
         if test_loader:
             loss_sum = 0
             for X, Y in iter(test_loader):
                 predictions = model(X)
-                loss_sum += loss(X, Y).item()
-            test_losses.append(loss_sum)
+                loss_sum += loss(predictions, Y).item()
+            test_losses[i] = loss_sum
 
-    if save_file_name:
-        np.save(f"save_file_prefix_{train_losses}", train_losses)
-        np.save(f"save_file_prefix_{test_losses}", test_losses)
+    if save_file_prefix:
+        np.save(f"{save_file_prefix}_train_losses", train_losses)
+        np.save(f"{save_file_prefix}_test_losses", test_losses)
 
     return train_losses, test_losses
