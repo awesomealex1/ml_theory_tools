@@ -1,6 +1,4 @@
 import numpy as np
-import torch.nn.functional as F
-from torch import nn
 import torch
 from pickle import UnpicklingError
 import matplotlib.pyplot as plt
