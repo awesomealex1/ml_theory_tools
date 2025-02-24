@@ -3,5 +3,7 @@ import numpy as np
 
 
 def eigen(n: int, model, dataloader, loss) -> tuple[np.ndarray, np.ndarray]:
-    eigenvals, eigenvecs = compute_hessian_eigenthings(model, dataloader, loss, n)
+    eigenvals, eigenvecs = compute_hessian_eigenthings(
+        model, dataloader, loss, n, use_gpu=False
+    )
     return eigenvals, eigenvecs

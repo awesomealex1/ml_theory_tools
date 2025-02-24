@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from torch import nn
 import torch
 from pickle import UnpicklingError
+import matplotlib.pyplot as plt
 
 
 def one_dimensional_linear_interpolation(
@@ -56,8 +57,14 @@ def one_dimensional_linear_interpolation(
                 loss_sum += loss(predictions, Y).item()
             test_losses[i] = loss_sum
 
+    plt.plot(alpha_range, train_losses)
+    plt.plot(alpha_range, test_losses)
+
     if save_file_prefix:
         np.save(f"{save_file_prefix}_train_losses", train_losses)
         np.save(f"{save_file_prefix}_test_losses", test_losses)
+        plt.savefig(f"{save_file_prefix}_linear_interpolation.png")
+
+    plt.show()
 
     return train_losses, test_losses
