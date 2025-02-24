@@ -36,6 +36,34 @@ def test_eigen(eigen_fixture):
     assert len(eigenvecs) == n
 
 
+def test_eigen_with_state_dict(eigen_fixture, create_initial_weights):
+    model, criterion, train_loader, n = eigen_fixture
+    params_path = create_initial_weights
+
+    eigenvals, eigenvecs = eigen(n, model, train_loader, criterion, params_path)
+
+    assert len(eigenvals) == n
+    assert len(eigenvecs) == n
+
+
+@pytest.fixture(scope="session")
+def create_initial_weights(tmp_path_factory):
+    """
+    Creates two sets of initial weights and saves them to disk.
+    Uses session scope to create files once per test session.
+    """
+    # Create a temporary directory that persists for the session
+    temp_dir = tmp_path_factory.mktemp("model_weights")
+
+    # Initialize model
+    model = SimpleFCNet()
+
+    # Save initial weights as params_A
+    params_path = os.path.join(temp_dir, "params.pth")
+    torch.save(model.state_dict(), params_path)
+
+    return params_path
+
 @pytest.fixture
 def eigen_fixture():
     # Initialize model
